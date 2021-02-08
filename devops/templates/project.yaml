@@ -1,0 +1,1139 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: postgres
+      openshift.io/deployment.name: postgres-1
+      openshift.io/generated-by: OpenShiftNewApp
+      openshift.io/scc: restricted
+    creationTimestamp: 2021-01-12T17:40:50Z
+    generateName: postgres-1-
+    labels:
+      app: postgres
+      deployment: postgres-1
+      deploymentconfig: postgres
+    name: postgres-1-srsmq
+    namespace: sod-container-lab
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicationController
+      name: postgres-1
+      uid: 4e85ce58-54fd-11eb-bd17-080027435a81
+    resourceVersion: "1211218"
+    selfLink: /api/v1/namespaces/sod-container-lab/pods/postgres-1-srsmq
+    uid: 4f5f95a1-54fd-11eb-bd17-080027435a81
+  spec:
+    containers:
+    - env:
+      - name: PGDATA
+        value: /tmp/data
+      - name: POSTGRES_PASSWORD
+        value: password
+      image: postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+      imagePullPolicy: Always
+      name: postgres
+      ports:
+      - containerPort: 5432
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1000320000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-volume-1
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-m7qrk
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    imagePullSecrets:
+    - name: default-dockercfg-8gp4d
+    nodeName: localhost
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000320000
+      seLinuxOptions:
+        level: s0:c18,c7
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    volumes:
+    - emptyDir: {}
+      name: postgres-volume-1
+    - name: default-token-m7qrk
+      secret:
+        defaultMode: 420
+        secretName: default-token-m7qrk
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:40:50Z
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:40:56Z
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:40:50Z
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://1cce88953d2bb53ad92034f274a56c75024b17a8c17c706a20f025ed885e2239
+      image: docker.io/postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+      imageID: docker-pullable://docker.io/postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+      lastState: {}
+      name: postgres
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: 2021-01-12T17:40:54Z
+    hostIP: 10.0.2.15
+    phase: Running
+    podIP: 172.17.0.10
+    qosClass: BestEffort
+    startTime: 2021-01-12T17:40:50Z
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      openshift.io/build.name: web-app-1
+      openshift.io/scc: privileged
+    creationTimestamp: 2021-01-12T17:47:45Z
+    labels:
+      openshift.io/build.name: web-app-1
+    name: web-app-1-build
+    namespace: sod-container-lab
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: Build
+      name: web-app-1
+      uid: 46a3c6b9-54fe-11eb-ac6f-080027435a81
+    resourceVersion: "1212989"
+    selfLink: /api/v1/namespaces/sod-container-lab/pods/web-app-1-build
+    uid: 46c4da61-54fe-11eb-bd17-080027435a81
+  spec:
+    containers:
+    - args:
+      - --loglevel=0
+      command:
+      - openshift-docker-build
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"web-app-1","namespace":"sod-container-lab","selfLink":"/apis/build.openshift.io/v1/namespaces/sod-container-lab/builds/web-app-1","uid":"46a3c6b9-54fe-11eb-ac6f-080027435a81","resourceVersion":"1212892","creationTimestamp":"2021-01-12T17:47:44Z","labels":{"app":"web-app","buildconfig":"web-app","openshift.io/build-config.name":"web-app","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"web-app","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"web-app","uid":"44ff6958-54fe-11eb-ac6f-080027435a81","controller":true}]},"spec":{"serviceAccount":"builder","source":{"type":"Git","git":{"uri":"https://github.com/amtago/openshift-demo-app.git","ref":"develop"},"contextDir":"src"},"strategy":{"type":"Docker","dockerStrategy":{"from":{"kind":"DockerImage","name":"node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414"},"pullSecret":{"name":"builder-dockercfg-xnls4"}}},"output":{"to":{"kind":"DockerImage","name":"172.30.1.1:5000/sod-container-lab/web-app:latest"},"pushSecret":{"name":"builder-dockercfg-xnls4"}},"resources":{},"postCommit":{},"nodeSelector":null,"triggeredBy":[{"message":"Image change","imageChangeBuild":{"imageID":"node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414","fromRef":{"kind":"ImageStreamTag","name":"node:14"}}}]},"status":{"phase":"New","outputDockerImageReference":"172.30.1.1:5000/sod-container-lab/web-app:latest","config":{"kind":"BuildConfig","namespace":"sod-container-lab","name":"web-app"},"output":{}}}
+      - name: SOURCE_REPOSITORY
+        value: https://github.com/amtago/openshift-demo-app.git
+      - name: SOURCE_URI
+        value: https://github.com/amtago/openshift-demo-app.git
+      - name: SOURCE_CONTEXT_DIR
+        value: src
+      - name: SOURCE_REF
+        value: develop
+      - name: PUSH_DOCKERCFG_PATH
+        value: /var/run/secrets/openshift.io/push
+      - name: PULL_DOCKERCFG_PATH
+        value: /var/run/secrets/openshift.io/pull
+      image: openshift/origin-docker-builder:v3.11.0
+      imagePullPolicy: IfNotPresent
+      name: docker-build
+      resources: {}
+      securityContext:
+        privileged: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/docker.sock
+        name: docker-socket
+      - mountPath: /var/run/crio/crio.sock
+        name: crio-socket
+      - mountPath: /var/run/secrets/openshift.io/push
+        name: builder-dockercfg-xnls4-push
+        readOnly: true
+      - mountPath: /var/run/secrets/openshift.io/pull
+        name: builder-dockercfg-xnls4-pull
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: builder-token-t2w67
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    imagePullSecrets:
+    - name: builder-dockercfg-xnls4
+    initContainers:
+    - args:
+      - --loglevel=0
+      command:
+      - openshift-git-clone
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"web-app-1","namespace":"sod-container-lab","selfLink":"/apis/build.openshift.io/v1/namespaces/sod-container-lab/builds/web-app-1","uid":"46a3c6b9-54fe-11eb-ac6f-080027435a81","resourceVersion":"1212892","creationTimestamp":"2021-01-12T17:47:44Z","labels":{"app":"web-app","buildconfig":"web-app","openshift.io/build-config.name":"web-app","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"web-app","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"web-app","uid":"44ff6958-54fe-11eb-ac6f-080027435a81","controller":true}]},"spec":{"serviceAccount":"builder","source":{"type":"Git","git":{"uri":"https://github.com/amtago/openshift-demo-app.git","ref":"develop"},"contextDir":"src"},"strategy":{"type":"Docker","dockerStrategy":{"from":{"kind":"DockerImage","name":"node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414"},"pullSecret":{"name":"builder-dockercfg-xnls4"}}},"output":{"to":{"kind":"DockerImage","name":"172.30.1.1:5000/sod-container-lab/web-app:latest"},"pushSecret":{"name":"builder-dockercfg-xnls4"}},"resources":{},"postCommit":{},"nodeSelector":null,"triggeredBy":[{"message":"Image change","imageChangeBuild":{"imageID":"node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414","fromRef":{"kind":"ImageStreamTag","name":"node:14"}}}]},"status":{"phase":"New","outputDockerImageReference":"172.30.1.1:5000/sod-container-lab/web-app:latest","config":{"kind":"BuildConfig","namespace":"sod-container-lab","name":"web-app"},"output":{}}}
+      - name: SOURCE_REPOSITORY
+        value: https://github.com/amtago/openshift-demo-app.git
+      - name: SOURCE_URI
+        value: https://github.com/amtago/openshift-demo-app.git
+      - name: SOURCE_CONTEXT_DIR
+        value: src
+      - name: SOURCE_REF
+        value: develop
+      image: openshift/origin-docker-builder:v3.11.0
+      imagePullPolicy: IfNotPresent
+      name: git-clone
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: builder-token-t2w67
+        readOnly: true
+    - args:
+      - --loglevel=0
+      command:
+      - openshift-manage-dockerfile
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"web-app-1","namespace":"sod-container-lab","selfLink":"/apis/build.openshift.io/v1/namespaces/sod-container-lab/builds/web-app-1","uid":"46a3c6b9-54fe-11eb-ac6f-080027435a81","resourceVersion":"1212892","creationTimestamp":"2021-01-12T17:47:44Z","labels":{"app":"web-app","buildconfig":"web-app","openshift.io/build-config.name":"web-app","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"web-app","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"web-app","uid":"44ff6958-54fe-11eb-ac6f-080027435a81","controller":true}]},"spec":{"serviceAccount":"builder","source":{"type":"Git","git":{"uri":"https://github.com/amtago/openshift-demo-app.git","ref":"develop"},"contextDir":"src"},"strategy":{"type":"Docker","dockerStrategy":{"from":{"kind":"DockerImage","name":"node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414"},"pullSecret":{"name":"builder-dockercfg-xnls4"}}},"output":{"to":{"kind":"DockerImage","name":"172.30.1.1:5000/sod-container-lab/web-app:latest"},"pushSecret":{"name":"builder-dockercfg-xnls4"}},"resources":{},"postCommit":{},"nodeSelector":null,"triggeredBy":[{"message":"Image change","imageChangeBuild":{"imageID":"node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414","fromRef":{"kind":"ImageStreamTag","name":"node:14"}}}]},"status":{"phase":"New","outputDockerImageReference":"172.30.1.1:5000/sod-container-lab/web-app:latest","config":{"kind":"BuildConfig","namespace":"sod-container-lab","name":"web-app"},"output":{}}}
+      - name: SOURCE_REPOSITORY
+        value: https://github.com/amtago/openshift-demo-app.git
+      - name: SOURCE_URI
+        value: https://github.com/amtago/openshift-demo-app.git
+      - name: SOURCE_CONTEXT_DIR
+        value: src
+      - name: SOURCE_REF
+        value: develop
+      image: openshift/origin-docker-builder:v3.11.0
+      imagePullPolicy: IfNotPresent
+      name: manage-dockerfile
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: builder-token-t2w67
+        readOnly: true
+    nodeName: localhost
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: builder
+    serviceAccountName: builder
+    terminationGracePeriodSeconds: 30
+    volumes:
+    - emptyDir: {}
+      name: buildworkdir
+    - hostPath:
+        path: /var/run/docker.sock
+        type: ""
+      name: docker-socket
+    - hostPath:
+        path: /var/run/crio/crio.sock
+        type: ""
+      name: crio-socket
+    - name: builder-dockercfg-xnls4-push
+      secret:
+        defaultMode: 384
+        secretName: builder-dockercfg-xnls4
+    - name: builder-dockercfg-xnls4-pull
+      secret:
+        defaultMode: 384
+        secretName: builder-dockercfg-xnls4
+    - name: builder-token-t2w67
+      secret:
+        defaultMode: 420
+        secretName: builder-token-t2w67
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:47:56Z
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:47:59Z
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:47:45Z
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://09dd718bc2890e66b1cd46bf159e07624544dc4574886e6fb19b27ce4e400f5c
+      image: docker.io/openshift/origin-docker-builder:v3.11.0
+      imageID: docker-pullable://docker.io/openshift/origin-docker-builder@sha256:c781437d8b3d8641cd6d17356b42a21095ab5627149798abfa1d47b229bc6965
+      lastState: {}
+      name: docker-build
+      ready: false
+      restartCount: 0
+      state:
+        terminated:
+          containerID: docker://09dd718bc2890e66b1cd46bf159e07624544dc4574886e6fb19b27ce4e400f5c
+          exitCode: 0
+          finishedAt: 2021-01-12T17:47:58Z
+          reason: Completed
+          startedAt: 2021-01-12T17:47:56Z
+    hostIP: 10.0.2.15
+    initContainerStatuses:
+    - containerID: docker://85b028a5f86291057965e0fa49a80138a10957d755785020829443ff7bd13465
+      image: docker.io/openshift/origin-docker-builder:v3.11.0
+      imageID: docker-pullable://docker.io/openshift/origin-docker-builder@sha256:c781437d8b3d8641cd6d17356b42a21095ab5627149798abfa1d47b229bc6965
+      lastState: {}
+      name: git-clone
+      ready: true
+      restartCount: 0
+      state:
+        terminated:
+          containerID: docker://85b028a5f86291057965e0fa49a80138a10957d755785020829443ff7bd13465
+          exitCode: 0
+          finishedAt: 2021-01-12T17:47:55Z
+          reason: Completed
+          startedAt: 2021-01-12T17:47:46Z
+    - containerID: docker://a0a2d1aa61feb308aaff12947bb588321d54d8ef516006540ba5e3f9e16cad1b
+      image: docker.io/openshift/origin-docker-builder:v3.11.0
+      imageID: docker-pullable://docker.io/openshift/origin-docker-builder@sha256:c781437d8b3d8641cd6d17356b42a21095ab5627149798abfa1d47b229bc6965
+      lastState: {}
+      name: manage-dockerfile
+      ready: true
+      restartCount: 0
+      state:
+        terminated:
+          containerID: docker://a0a2d1aa61feb308aaff12947bb588321d54d8ef516006540ba5e3f9e16cad1b
+          exitCode: 0
+          finishedAt: 2021-01-12T17:47:56Z
+          reason: Completed
+          startedAt: 2021-01-12T17:47:55Z
+    phase: Succeeded
+    podIP: 172.17.0.8
+    qosClass: BestEffort
+    startTime: 2021-01-12T17:47:45Z
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: web-app
+      openshift.io/deployment.name: web-app-1
+      openshift.io/generated-by: OpenShiftNewApp
+      openshift.io/scc: restricted
+    creationTimestamp: 2021-01-12T17:48:01Z
+    generateName: web-app-1-
+    labels:
+      app: web-app
+      deployment: web-app-1
+      deploymentconfig: web-app
+    name: web-app-1-n25ds
+    namespace: sod-container-lab
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicationController
+      name: web-app-1
+      uid: 4f3092a6-54fe-11eb-bd17-080027435a81
+    resourceVersion: "1213028"
+    selfLink: /api/v1/namespaces/sod-container-lab/pods/web-app-1-n25ds
+    uid: 5079b1a4-54fe-11eb-bd17-080027435a81
+  spec:
+    containers:
+    - env:
+      - name: dbhost
+        value: postgres.sod-container-lab.svc.cluster.local
+      image: 172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+      imagePullPolicy: Always
+      name: web-app
+      ports:
+      - containerPort: 3000
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1000320000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-m7qrk
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    imagePullSecrets:
+    - name: default-dockercfg-8gp4d
+    nodeName: localhost
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000320000
+      seLinuxOptions:
+        level: s0:c18,c7
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    volumes:
+    - name: default-token-m7qrk
+      secret:
+        defaultMode: 420
+        secretName: default-token-m7qrk
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:48:01Z
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:48:03Z
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: 2021-01-12T17:48:01Z
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://6570754aaa180d56e2646ca3dc4c844efed37788f37027563ce113327d9c0f35
+      image: 172.30.1.1:5000/sod-container-lab/web-app:latest
+      imageID: docker-pullable://172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+      lastState: {}
+      name: web-app
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: 2021-01-12T17:48:03Z
+    hostIP: 10.0.2.15
+    phase: Running
+    podIP: 172.17.0.8
+    qosClass: BestEffort
+    startTime: 2021-01-12T17:48:01Z
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    annotations:
+      openshift.io/deployer-pod.completed-at: 2021-01-12 17:40:56 +0000 UTC
+      openshift.io/deployer-pod.created-at: 2021-01-12 17:40:48 +0000 UTC
+      openshift.io/deployer-pod.name: postgres-1-deploy
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: postgres
+      openshift.io/deployment.phase: Complete
+      openshift.io/deployment.replicas: "1"
+      openshift.io/deployment.status-reason: config change
+      openshift.io/encoded-deployment-config: |
+        {"kind":"DeploymentConfig","apiVersion":"apps.openshift.io/v1","metadata":{"name":"postgres","namespace":"sod-container-lab","selfLink":"/apis/apps.openshift.io/v1/namespaces/sod-container-lab/deploymentconfigs/postgres","uid":"4c8a1e49-54fd-11eb-ac6f-080027435a81","resourceVersion":"1211156","generation":2,"creationTimestamp":"2021-01-12T17:40:45Z","labels":{"app":"postgres"},"annotations":{"openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"strategy":{"type":"Rolling","rollingParams":{"updatePeriodSeconds":1,"intervalSeconds":1,"timeoutSeconds":600,"maxUnavailable":"25%","maxSurge":"25%"},"resources":{},"activeDeadlineSeconds":21600},"triggers":[{"type":"ConfigChange"},{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["postgres"],"from":{"kind":"ImageStreamTag","namespace":"sod-container-lab","name":"postgres:latest"},"lastTriggeredImage":"postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45"}}],"replicas":1,"revisionHistoryLimit":10,"test":false,"selector":{"app":"postgres","deploymentconfig":"postgres"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"postgres","deploymentconfig":"postgres"},"annotations":{"openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"volumes":[{"name":"postgres-volume-1","emptyDir":{}}],"containers":[{"name":"postgres","image":"postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45","ports":[{"containerPort":5432,"protocol":"TCP"}],"env":[{"name":"PGDATA","value":"/tmp/data"},{"name":"POSTGRES_PASSWORD","value":"password"}],"resources":{},"volumeMounts":[{"name":"postgres-volume-1","mountPath":"/var/lib/postgresql/data"}],"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{"latestVersion":1,"observedGeneration":1,"replicas":0,"updatedReplicas":0,"availableReplicas":0,"unavailableReplicas":0,"details":{"message":"config change","causes":[{"type":"ConfigChange"}]},"conditions":[{"type":"Available","status":"False","lastUpdateTime":"2021-01-12T17:40:45Z","lastTransitionTime":"2021-01-12T17:40:45Z","message":"Deployment config does not have minimum availability."}]}}
+    creationTimestamp: 2021-01-12T17:40:48Z
+    generation: 2
+    labels:
+      app: postgres
+      openshift.io/deployment-config.name: postgres
+    name: postgres-1
+    namespace: sod-container-lab
+    ownerReferences:
+    - apiVersion: apps.openshift.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DeploymentConfig
+      name: postgres
+      uid: 4c8a1e49-54fd-11eb-ac6f-080027435a81
+    resourceVersion: "1211225"
+    selfLink: /api/v1/namespaces/sod-container-lab/replicationcontrollers/postgres-1
+    uid: 4e85ce58-54fd-11eb-bd17-080027435a81
+  spec:
+    replicas: 1
+    selector:
+      app: postgres
+      deployment: postgres-1
+      deploymentconfig: postgres
+    template:
+      metadata:
+        annotations:
+          openshift.io/deployment-config.latest-version: "1"
+          openshift.io/deployment-config.name: postgres
+          openshift.io/deployment.name: postgres-1
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: postgres
+          deployment: postgres-1
+          deploymentconfig: postgres
+      spec:
+        containers:
+        - env:
+          - name: PGDATA
+            value: /tmp/data
+          - name: POSTGRES_PASSWORD
+            value: password
+          image: postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+          imagePullPolicy: Always
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-volume-1
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: postgres-volume-1
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    annotations:
+      openshift.io/deployer-pod.completed-at: 2021-01-12 17:48:04 +0000 UTC
+      openshift.io/deployer-pod.created-at: 2021-01-12 17:47:59 +0000 UTC
+      openshift.io/deployer-pod.name: web-app-1-deploy
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: web-app
+      openshift.io/deployment.phase: Complete
+      openshift.io/deployment.replicas: "1"
+      openshift.io/deployment.status-reason: config change
+      openshift.io/encoded-deployment-config: |
+        {"kind":"DeploymentConfig","apiVersion":"apps.openshift.io/v1","metadata":{"name":"web-app","namespace":"sod-container-lab","selfLink":"/apis/apps.openshift.io/v1/namespaces/sod-container-lab/deploymentconfigs/web-app","uid":"4501fe4e-54fe-11eb-ac6f-080027435a81","resourceVersion":"1212976","generation":2,"creationTimestamp":"2021-01-12T17:47:42Z","labels":{"app":"web-app"},"annotations":{"openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"strategy":{"type":"Rolling","rollingParams":{"updatePeriodSeconds":1,"intervalSeconds":1,"timeoutSeconds":600,"maxUnavailable":"25%","maxSurge":"25%"},"resources":{},"activeDeadlineSeconds":21600},"triggers":[{"type":"ConfigChange"},{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["web-app"],"from":{"kind":"ImageStreamTag","namespace":"sod-container-lab","name":"web-app:latest"},"lastTriggeredImage":"172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb"}}],"replicas":1,"revisionHistoryLimit":10,"test":false,"selector":{"app":"web-app","deploymentconfig":"web-app"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"web-app","deploymentconfig":"web-app"},"annotations":{"openshift.io/generated-by":"OpenShiftNewApp"}},"spec":{"containers":[{"name":"web-app","image":"172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb","ports":[{"containerPort":3000,"protocol":"TCP"}],"env":[{"name":"dbhost","value":"postgres.sod-container-lab.svc.cluster.local"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{"latestVersion":1,"observedGeneration":1,"replicas":0,"updatedReplicas":0,"availableReplicas":0,"unavailableReplicas":0,"details":{"message":"config change","causes":[{"type":"ConfigChange"}]},"conditions":[{"type":"Available","status":"False","lastUpdateTime":"2021-01-12T17:47:42Z","lastTransitionTime":"2021-01-12T17:47:42Z","message":"Deployment config does not have minimum availability."}]}}
+    creationTimestamp: 2021-01-12T17:47:59Z
+    generation: 2
+    labels:
+      app: web-app
+      openshift.io/deployment-config.name: web-app
+    name: web-app-1
+    namespace: sod-container-lab
+    ownerReferences:
+    - apiVersion: apps.openshift.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DeploymentConfig
+      name: web-app
+      uid: 4501fe4e-54fe-11eb-ac6f-080027435a81
+    resourceVersion: "1213039"
+    selfLink: /api/v1/namespaces/sod-container-lab/replicationcontrollers/web-app-1
+    uid: 4f3092a6-54fe-11eb-bd17-080027435a81
+  spec:
+    replicas: 1
+    selector:
+      app: web-app
+      deployment: web-app-1
+      deploymentconfig: web-app
+    template:
+      metadata:
+        annotations:
+          openshift.io/deployment-config.latest-version: "1"
+          openshift.io/deployment-config.name: web-app
+          openshift.io/deployment.name: web-app-1
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: web-app
+          deployment: web-app-1
+          deploymentconfig: web-app
+      spec:
+        containers:
+        - env:
+          - name: dbhost
+            value: postgres.sod-container-lab.svc.cluster.local
+          image: 172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+          imagePullPolicy: Always
+          name: web-app
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2021-01-12T17:40:45Z
+    labels:
+      app: postgres
+    name: postgres
+    namespace: sod-container-lab
+    resourceVersion: "1211137"
+    selfLink: /api/v1/namespaces/sod-container-lab/services/postgres
+    uid: 4c8d0329-54fd-11eb-bd17-080027435a81
+  spec:
+    clusterIP: 172.30.132.198
+    ports:
+    - name: 5432-tcp
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: postgres
+      deploymentconfig: postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2021-01-12T17:47:42Z
+    labels:
+      app: web-app
+    name: web-app
+    namespace: sod-container-lab
+    resourceVersion: "1212868"
+    selfLink: /api/v1/namespaces/sod-container-lab/services/web-app
+    uid: 4503f397-54fe-11eb-bd17-080027435a81
+  spec:
+    clusterIP: 172.30.91.178
+    ports:
+    - name: 3000-tcp
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: web-app
+      deploymentconfig: web-app
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2021-01-12T17:40:45Z
+    generation: 2
+    labels:
+      app: postgres
+    name: postgres
+    namespace: sod-container-lab
+    resourceVersion: "1211227"
+    selfLink: /apis/apps.openshift.io/v1/namespaces/sod-container-lab/deploymentconfigs/postgres
+    uid: 4c8a1e49-54fd-11eb-ac6f-080027435a81
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: postgres
+      deploymentconfig: postgres
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: postgres
+          deploymentconfig: postgres
+      spec:
+        containers:
+        - env:
+          - name: PGDATA
+            value: /tmp/data
+          - name: POSTGRES_PASSWORD
+            value: password
+          image: postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+          imagePullPolicy: Always
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-volume-1
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: postgres-volume-1
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - postgres
+        from:
+          kind: ImageStreamTag
+          name: postgres:latest
+          namespace: sod-container-lab
+        lastTriggeredImage: postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+      type: ImageChange
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: 2021-01-12T17:40:56Z
+      lastUpdateTime: 2021-01-12T17:40:56Z
+      message: Deployment config has minimum availability.
+      status: "True"
+      type: Available
+    - lastTransitionTime: 2021-01-12T17:40:57Z
+      lastUpdateTime: 2021-01-12T17:40:57Z
+      message: replication controller "postgres-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: "True"
+      type: Progressing
+    details:
+      causes:
+      - type: ConfigChange
+      message: config change
+    latestVersion: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    unavailableReplicas: 0
+    updatedReplicas: 1
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2021-01-12T17:47:42Z
+    generation: 2
+    labels:
+      app: web-app
+    name: web-app
+    namespace: sod-container-lab
+    resourceVersion: "1213041"
+    selfLink: /apis/apps.openshift.io/v1/namespaces/sod-container-lab/deploymentconfigs/web-app
+    uid: 4501fe4e-54fe-11eb-ac6f-080027435a81
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: web-app
+      deploymentconfig: web-app
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: web-app
+          deploymentconfig: web-app
+      spec:
+        containers:
+        - env:
+          - name: dbhost
+            value: postgres.sod-container-lab.svc.cluster.local
+          image: 172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+          imagePullPolicy: Always
+          name: web-app
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - web-app
+        from:
+          kind: ImageStreamTag
+          name: web-app:latest
+          namespace: sod-container-lab
+        lastTriggeredImage: 172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+      type: ImageChange
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: 2021-01-12T17:48:04Z
+      lastUpdateTime: 2021-01-12T17:48:04Z
+      message: Deployment config has minimum availability.
+      status: "True"
+      type: Available
+    - lastTransitionTime: 2021-01-12T17:48:05Z
+      lastUpdateTime: 2021-01-12T17:48:05Z
+      message: replication controller "web-app-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: "True"
+      type: Progressing
+    details:
+      causes:
+      - type: ConfigChange
+      message: config change
+    latestVersion: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    unavailableReplicas: 0
+    updatedReplicas: 1
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2021-01-12T17:47:42Z
+    labels:
+      app: web-app
+    name: web-app
+    namespace: sod-container-lab
+    resourceVersion: "1212891"
+    selfLink: /apis/build.openshift.io/v1/namespaces/sod-container-lab/buildconfigs/web-app
+    uid: 44ff6958-54fe-11eb-ac6f-080027435a81
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: web-app:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: src
+      git:
+        ref: develop
+        uri: https://github.com/amtago/openshift-demo-app.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: node:14
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: ui8-pgfGOg1TxWpdqrJl
+      type: GitHub
+    - generic:
+        secret: RDrdJ_HWETcObo-n_1_Y
+      type: Generic
+    - type: ConfigChange
+    - imageChange:
+        lastTriggeredImageID: node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414
+      type: ImageChange
+  status:
+    lastVersion: 1
+- apiVersion: build.openshift.io/v1
+  kind: Build
+  metadata:
+    annotations:
+      openshift.io/build-config.name: web-app
+      openshift.io/build.number: "1"
+      openshift.io/build.pod-name: web-app-1-build
+    creationTimestamp: 2021-01-12T17:47:44Z
+    labels:
+      app: web-app
+      buildconfig: web-app
+      openshift.io/build-config.name: web-app
+      openshift.io/build.start-policy: Serial
+    name: web-app-1
+    namespace: sod-container-lab
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: BuildConfig
+      name: web-app
+      uid: 44ff6958-54fe-11eb-ac6f-080027435a81
+    resourceVersion: "1212990"
+    selfLink: /apis/build.openshift.io/v1/namespaces/sod-container-lab/builds/web-app-1
+    uid: 46a3c6b9-54fe-11eb-ac6f-080027435a81
+  spec:
+    nodeSelector: null
+    output:
+      pushSecret:
+        name: builder-dockercfg-xnls4
+      to:
+        kind: ImageStreamTag
+        name: web-app:latest
+    postCommit: {}
+    resources: {}
+    revision:
+      git:
+        author:
+          email: rudi.starcevic@axa.com
+          name: Rudi Starcevic
+        commit: 303f987585d58b3c3339ab524149927450ea8b4d
+        committer:
+          email: rudi.starcevic@axa.com
+          name: Rudi Starcevic
+        message: 'feat: Updated home page'
+      type: Git
+    serviceAccount: builder
+    source:
+      contextDir: src
+      git:
+        ref: develop
+        uri: https://github.com/amtago/openshift-demo-app.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: DockerImage
+          name: node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414
+      type: Docker
+    triggeredBy:
+    - imageChangeBuild:
+        fromRef:
+          kind: ImageStreamTag
+          name: node:14
+        imageID: node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414
+      message: Image change
+  status:
+    completionTimestamp: 2021-01-12T17:47:59Z
+    config:
+      kind: BuildConfig
+      name: web-app
+      namespace: sod-container-lab
+    duration: 14000000000
+    output:
+      to:
+        imageDigest: sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+    outputDockerImageReference: 172.30.1.1:5000/sod-container-lab/web-app:latest
+    phase: Complete
+    stages:
+    - durationMilliseconds: 5706
+      name: FetchInputs
+      startTime: 2021-01-12T17:47:47Z
+      steps:
+      - durationMilliseconds: 5706
+        name: FetchGitSource
+        startTime: 2021-01-12T17:47:47Z
+    - durationMilliseconds: 1041
+      name: Build
+      startTime: 2021-01-12T17:47:57Z
+      steps:
+      - durationMilliseconds: 1041
+        name: DockerBuild
+        startTime: 2021-01-12T17:47:57Z
+    - durationMilliseconds: 434
+      name: PushImage
+      startTime: 2021-01-12T17:47:58Z
+      steps:
+      - durationMilliseconds: 434
+        name: PushDockerImage
+        startTime: 2021-01-12T17:47:58Z
+    startTimestamp: 2021-01-12T17:47:45Z
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+      openshift.io/image.dockerRepositoryCheck: 2021-01-12T17:47:44Z
+    creationTimestamp: 2021-01-12T17:47:42Z
+    generation: 2
+    labels:
+      app: web-app
+    name: node
+    namespace: sod-container-lab
+    resourceVersion: "1212890"
+    selfLink: /apis/image.openshift.io/v1/namespaces/sod-container-lab/imagestreams/node
+    uid: 44faa46e-54fe-11eb-ac6f-080027435a81
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: node:14
+      from:
+        kind: DockerImage
+        name: node:14
+      generation: 2
+      importPolicy: {}
+      name: "14"
+      referencePolicy:
+        type: Source
+  status:
+    dockerImageRepository: 172.30.1.1:5000/sod-container-lab/node
+    tags:
+    - items:
+      - created: 2021-01-12T17:47:44Z
+        dockerImageReference: node@sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414
+        generation: 2
+        image: sha256:c8000514cb7d4cf1fb3ea2e7f5d397512392b0bd70dc2c94ba89c147a3ba8414
+      tag: "14"
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+      openshift.io/image.dockerRepositoryCheck: 2021-01-12T17:40:48Z
+    creationTimestamp: 2021-01-12T17:40:45Z
+    generation: 2
+    labels:
+      app: postgres
+    name: postgres
+    namespace: sod-container-lab
+    resourceVersion: "1211152"
+    selfLink: /apis/image.openshift.io/v1/namespaces/sod-container-lab/imagestreams/postgres
+    uid: 4c87fa3c-54fd-11eb-ac6f-080027435a81
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: postgres
+      from:
+        kind: DockerImage
+        name: postgres
+      generation: 2
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Source
+  status:
+    dockerImageRepository: 172.30.1.1:5000/sod-container-lab/postgres
+    tags:
+    - items:
+      - created: 2021-01-12T17:40:48Z
+        dockerImageReference: postgres@sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+        generation: 2
+        image: sha256:57e21ed66832b61c13192684b140f2dc23fdc9b36b5c9c49e11cecfc23a59a45
+      tag: latest
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2021-01-12T17:47:42Z
+    generation: 1
+    labels:
+      app: web-app
+    name: web-app
+    namespace: sod-container-lab
+    resourceVersion: "1212969"
+    selfLink: /apis/image.openshift.io/v1/namespaces/sod-container-lab/imagestreams/web-app
+    uid: 44fbf7a3-54fe-11eb-ac6f-080027435a81
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: 172.30.1.1:5000/sod-container-lab/web-app
+    tags:
+    - items:
+      - created: 2021-01-12T17:47:58Z
+        dockerImageReference: 172.30.1.1:5000/sod-container-lab/web-app@sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+        generation: 1
+        image: sha256:497f779e973407cbc3ecb5337e024a10abca55cc8a05c27819d9202fb1c57ddb
+      tag: latest
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: 2021-01-12T17:49:36Z
+    labels:
+      app: web-app
+    name: web-app
+    namespace: sod-container-lab
+    resourceVersion: "1213411"
+    selfLink: /apis/route.openshift.io/v1/namespaces/sod-container-lab/routes/web-app
+    uid: 893f32f7-54fe-11eb-ac6f-080027435a81
+  spec:
+    host: web-app-sod-container-lab.192.168.99.100.nip.io
+    port:
+      targetPort: 3000-tcp
+    to:
+      kind: Service
+      name: web-app
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2021-01-12T17:49:36Z
+        status: "True"
+        type: Admitted
+      host: web-app-sod-container-lab.192.168.99.100.nip.io
+      routerName: router
+      wildcardPolicy: None
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

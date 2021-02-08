@@ -1,0 +1,24 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha lib",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
+    "server": "nodemon ./server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "humanize-string": "^2.1.0",
+    "pg": "^8.5.1"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
+    "nyc": "^15.1.0"
+  }
+}

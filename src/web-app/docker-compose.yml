@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  app:
+    image: sod/webapp:1.0.0
+    build: .
+    ports:
+      - "8080:3000"
+    depends_on:
+      - database
+    environment:
+      dbhost: database
+
+  database:
+    # not use docker hub
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    # enable a port for the local source code env to connect
+    ports:
+      - "5432:5432"

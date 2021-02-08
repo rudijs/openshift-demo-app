@@ -1,0 +1,23 @@
+After installation is done:
+- To start your minishift environment
+  - minishift start --vm-driver virtualbox/hyperkit/xhyve
+ 
+ Open openshift local environment on you browser:
+  - https://192.168.99.100:8443/console/catalog (Can be seen on the log on you terminal)
+  - Credentials: username: developer, password: any key
+ 
+Before using the template you need to create a new project first or just use the default project already created.
+  - to create a new project on your local environment:
+    - On Home select Create project
+      - Type in project name must be unique
+      - Displayed name
+      - Description
+      - Click Create
+      
+  - You can now use the template provided on the new project created.
+    - on Home locate Import YAML/JSON
+      - Select your newly created project
+      - Upload the template provided or Copy and Paste the Content
+
+
+

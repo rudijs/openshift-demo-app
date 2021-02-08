@@ -1,0 +1,27 @@
+docker exec -it src_postgres_1 bash
+
+apt-get update && apt-get install -y procps
+
+psql --user postgres
+
+CREATE ROLE me WITH LOGIN PASSWORD 'password';
+
+ALTER ROLE me CREATEDB;
+
+\du
+
+\q
+
+psql -d postgres -U me
+
+CREATE DATABASE api;
+
+\list
+
+\c api
+
+CREATE TABLE users ( ID SERIAL PRIMARY KEY, name VARCHAR(30), email VARCHAR(30));
+
+INSERT INTO users (name, email) VALUES ('Bob', 'bob@example.com'), ('Alice', 'alice@example.com');
+
+SELECT * FROM users;
